@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.py[cod]
+models/*.pt
+yolo*.pt
+outputs/
+data/nexar_samples/**/*.mp4
