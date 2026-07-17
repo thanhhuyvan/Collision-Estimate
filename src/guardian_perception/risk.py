@@ -26,13 +26,17 @@ class RiskEngine:
         self.config = config or RiskConfig()
         self._states: dict[str, _TrackState] = {}
 
-    def evaluate_frame(self, observations: list[TrackObservation]) -> RiskDecision:
+    def evaluate_frame(
+        self, observations: list[TrackObservation], *, frame_id: int = 0, timestamp_ms: int = 0
+    ) -> RiskDecision:
         """Evaluate one frame of tracker observations and choose one relevant target."""
 
         if not observations:
-            return RiskDecision(0, 0, RiskLevel.NONE, None, None, 0.0, "no observations", 0)
+            return RiskDecision(
+                frame_id, timestamp_ms, RiskLevel.NONE, None, None, 0.0, "no observations", 0
+            )
 
-        candidates: list[tuple[RiskLevel, float, float, TrackObservation, str]] = []
+        candidates: list[tuple[RiskLevel, float, float, str, TrackObservation]] = []
         for observation in observations:
             evaluation = self._evaluate_observation(observation)
             if evaluation is not None:

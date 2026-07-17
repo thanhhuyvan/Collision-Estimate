@@ -2,6 +2,7 @@
 
 from .config import RiskConfig
 from .risk import RiskEngine
+from .tracker import IouTracker
 from .types import BoundingBox, Detection, RiskDecision, RiskLevel, TrackObservation
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "RiskEngine",
     "RiskLevel",
     "TrackObservation",
+    "IouTracker",
 ]

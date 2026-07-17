@@ -1,0 +1,7 @@
+file_name,label,time_of_event,time_of_alert,light_conditions,weather,scene,time_to_accident
+00015.mp4,1,19.7,17.667,Normal,Clear,Highway,
+00026.mp4,1,9.796,6.997,Normal,Cloudy,Highway,
+00054.mp4,1,19.3,17.767,Twilight,Clear,Urban,
+01042.mp4,0,,,Normal,Clear,Highway,
+01079.mp4,0,,,Normal,Cloudy,Highway,
+01102.mp4,0,,,Normal,Clear,Other,
