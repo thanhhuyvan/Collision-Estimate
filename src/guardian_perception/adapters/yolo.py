@@ -30,7 +30,14 @@ def yolo_rows_to_detections(
 class YoloDetector:
     """Lazy Ultralytics wrapper for CPU smoke tests and future GPU execution."""
 
-    def __init__(self, weights: str = "yolo11n.pt", confidence: float = 0.50) -> None:
+    def __init__(
+        self,
+        weights: str = "yolo11n.pt",
+        confidence: float = 0.50,
+        *,
+        image_size: int = 640,
+        device: str | int | None = None,
+    ) -> None:
         try:
             from ultralytics import YOLO
         except ImportError as error:  # Keeps the core importable without ML dependencies.
@@ -39,6 +46,8 @@ class YoloDetector:
             ) from error
         self._model = YOLO(weights)
         self._confidence = confidence
+        self._image_size = image_size
+        self._device = device
 
     def detect_frame(self, frame: Any, *, frame_id: int, timestamp_ms: int) -> list[Detection]:
         """Run one frame and return detector-neutral objects.
@@ -47,7 +56,13 @@ class YoloDetector:
         ``TrackObservation`` values before the risk engine is called.
         """
 
-        result = self._model.predict(frame, conf=self._confidence, verbose=False)[0]
+        result = self._model.predict(
+            frame,
+            conf=self._confidence,
+            imgsz=self._image_size,
+            device=self._device,
+            verbose=False,
+        )[0]
         rows = [
             (*box.xyxy[0].tolist(), float(box.conf[0]), int(box.cls[0]))
             for box in result.boxes

@@ -66,3 +66,22 @@ It writes the following under `outputs/laptop_test/`, which is intentionally ign
 The tracker is a dependency-free same-class greedy-IoU tracker (`>= 0.30`) with a 400 ms
 missed-observation expiry. It emits the existing `TrackObservation` contract, so it can later
 be swapped for ByteTrack or NVIDIA NvDCF without changing ego-corridor or risk logic.
+
+## Backbone latency gate
+
+Never choose a heavier detector from accuracy alone. The proposal reserves 35 ms for
+perception inference and 100 ms for the complete Fast Path. Measure candidate backbones on
+the target device with a warm p95 latency gate:
+
+```powershell
+$env:PYTHONPATH = 'src'
+# Laptop comparison: functional estimate only
+& .\.venv\Scripts\python.exe scripts\benchmark_backbones.py --weights yolo11n.pt yolo11s.pt yolo11m.pt
+# NVIDIA PC: the decision-quality benchmark
+& .\.venv\Scripts\python.exe scripts\benchmark_backbones.py --device 0 --weights yolo11n.pt yolo11s.pt yolo11m.pt
+```
+
+The script writes JSON and CSV evidence under `outputs/backbone_benchmarks/`. A backbone is
+accepted for Fast Path only when its measured warm p95 is at most 35 ms; its estimated total
+is the p95 inference plus the proposal's fixed 60 ms allowance for capture, planning, safety,
+and UI/CAN. The laptop result must not be used as the final vehicle decision.
