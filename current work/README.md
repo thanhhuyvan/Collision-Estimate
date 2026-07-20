@@ -115,3 +115,48 @@ For every GPU build, preserve:
 The first decision point is simple: determine whether YOLO11n TensorRT meets the detector
 latency gate and detects the relevant target. Do not introduce a heavier backbone until this
 answer is measured.
+
+## Current pivot: reliability-aware sensor fusion
+
+The first fusion baseline is intentionally late/object-level fusion rather than a learned BEV
+network. `guardian_perception.fusion` fuses a camera track's estimated range/closing speed with
+an already-associated radar return. Camera detector confidence and image quality determine the
+camera reliability; radar signal quality and association confidence determine radar reliability.
+Radar is rejected below the association gate, and meaningful sensor disagreement halves fused
+reliability instead of silently producing an over-confident TTC.
+
+Run the dependency-free learning demo with:
+
+```powershell
+$env:PYTHONPATH = 'src'
+python scripts\run_reliability_fusion_demo.py
+```
+
+The next dataset step is to replace the demonstration measurements with timestamped nuScenes
+camera/radar/ego data, while retaining every fusion weight and fallback explanation in the log.
+
+### Local nuScenes fusion subset
+
+The local `E:\datasets\nuscenes\mini` dataset subset contains eight synchronized CAM_FRONT
+images and RADAR_FRONT point clouds from `scene-0061`. Generate its compact manifest with:
+
+```powershell
+python scripts\prepare_nuscenes_fusion_subset.py `
+  --data-root E:\datasets\nuscenes\mini `
+  --scene scene-0061 --frames 8
+```
+
+The manifest contains the source timestamps, camera/radar calibration, ego poses, and ground
+truth annotations needed for association and late-fusion experiments. It does not use ground
+truth as a runtime fusion input.
+
+Render an inspection video before implementing association:
+
+```powershell
+& .\.venv\Scripts\python.exe scripts\render_nuscenes_fusion_preview.py `
+  --data-root E:\datasets\nuscenes\mini
+```
+
+The resulting video overlays projected radar points and evaluation-only ground-truth 3D boxes
+on CAM_FRONT, then places raw RADAR_FRONT points in Bird's-Eye View. It is a diagnostic tool
+for calibration, timestamp offset, radar clutter, and association ambiguity.

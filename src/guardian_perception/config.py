@@ -39,3 +39,35 @@ class RiskConfig:
             raise ValueError("warning TTC must be positive and below caution TTC")
         if self.min_track_age_frames < 2:
             raise ValueError("min_track_age_frames must be at least two")
+
+
+@dataclass(frozen=True)
+class ReliabilityFusionConfig:
+    """Conservative, explainable defaults for camera-radar late fusion.
+
+    These are initial engineering assumptions, not calibrated vehicle specifications. They
+    keep each sensor's uncertainty visible so later nuScenes/CARLA experiments can replace
+    them with measured values.
+    """
+
+    minimum_association_confidence: float = 0.50
+    camera_range_std_m: float = 8.0
+    camera_closing_speed_std_mps: float = 4.0
+    radar_range_std_m: float = 0.8
+    radar_closing_speed_std_mps: float = 0.5
+    range_disagreement_m: float = 8.0
+    closing_speed_disagreement_mps: float = 5.0
+    minimum_closing_speed_mps: float = 0.1
+
+    def __post_init__(self) -> None:
+        if not 0 < self.minimum_association_confidence <= 1:
+            raise ValueError("minimum_association_confidence must be in (0, 1]")
+        if min(
+            self.camera_range_std_m,
+            self.camera_closing_speed_std_mps,
+            self.radar_range_std_m,
+            self.radar_closing_speed_std_mps,
+            self.range_disagreement_m,
+            self.closing_speed_disagreement_mps,
+        ) <= 0:
+            raise ValueError("fusion uncertainty and disagreement values must be positive")

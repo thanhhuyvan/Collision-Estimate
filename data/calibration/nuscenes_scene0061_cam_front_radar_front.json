@@ -1,0 +1,104 @@
+{
+  "profile_name": "nuscenes_scene0061_cam_front_radar_front",
+  "source": "nuScenes v1.0-mini calibrated_sensor metadata",
+  "purpose": "offline camera-radar projection baseline; not a physical calibration for a different vehicle",
+  "coordinate_convention": "p_camera = radar_to_camera_rotation @ p_radar + radar_to_camera_translation_m",
+  "camera": {
+    "name": "CAM_FRONT",
+    "intrinsic": [
+      [
+        1266.417203046554,
+        0.0,
+        816.2670197447984
+      ],
+      [
+        0.0,
+        1266.417203046554,
+        491.50706579294757
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "sensor_to_ego": {
+      "token": "1d31c729b073425e8e0202c5c6e66ee1",
+      "sensor_token": "725903f5b62f56118f4094b46a4470d8",
+      "translation": [
+        1.70079118954,
+        0.0159456324149,
+        1.51095763913
+      ],
+      "rotation": [
+        0.4998015430569128,
+        -0.5030316162024876,
+        0.4997798114386805,
+        -0.49737083824542755
+      ],
+      "camera_intrinsic": [
+        [
+          1266.417203046554,
+          0.0,
+          816.2670197447984
+        ],
+        [
+          0.0,
+          1266.417203046554,
+          491.50706579294757
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "radar": {
+    "name": "RADAR_FRONT",
+    "sensor_to_ego": {
+      "token": "f4d2a6c281f34a7eb8bb033d82321f79",
+      "sensor_token": "47fcd48f71d75e0da5c8c1704a9bfe0a",
+      "translation": [
+        3.412,
+        0.0,
+        0.5
+      ],
+      "rotation": [
+        0.9999984769132877,
+        0.0,
+        0.0,
+        0.0017453283658983088
+      ],
+      "camera_intrinsic": []
+    }
+  },
+  "radar_to_camera_rotation": [
+    [
+      0.002194150169,
+      -0.999997268779,
+      0.000805071338
+    ],
+    [
+      -0.005639555471,
+      -0.00081743453,
+      -0.999983763476
+    ],
+    [
+      0.999981690392,
+      0.002189574299,
+      -0.005641333642
+    ]
+  ],
+  "radar_to_camera_translation_m": [
+    0.024859319939,
+    1.001309057537,
+    1.716766550761
+  ],
+  "runtime_gates": {
+    "maximum_camera_radar_offset_ms": 100,
+    "association_projection_padding_px": 14,
+    "minimum_association_confidence": 0.5
+  }
+}
