@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "purpose": "Small deterministic regression set for warning-only lead-object fusion.",
+  "scenarios": [
+    {
+      "id": "reliable_closing_lead",
+      "description": "A stable lead vehicle closes with a reliable radar association.",
+      "expected_final_risk": "warning",
+      "frames": [
+        {"camera_range_m": 32, "camera_closing_speed_mps": 4.2, "radar_range_m": 31, "radar_closing_speed_mps": 6.0, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 28, "camera_closing_speed_mps": 4.3, "radar_range_m": 27, "radar_closing_speed_mps": 6.2, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 24, "camera_closing_speed_mps": 4.4, "radar_range_m": 23, "radar_closing_speed_mps": 6.3, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 20, "camera_closing_speed_mps": 4.6, "radar_range_m": 20, "radar_closing_speed_mps": 6.5, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 13, "camera_closing_speed_mps": 4.9, "radar_range_m": 13, "radar_closing_speed_mps": 7.0, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 10, "camera_closing_speed_mps": 5.0, "radar_range_m": 10, "radar_closing_speed_mps": 7.2, "association_confidence": 0.9, "in_ego_corridor": true}
+      ]
+    },
+    {
+      "id": "ambiguous_radar_fallback",
+      "description": "A closing camera track has an ambiguous radar association and must not force a warning.",
+      "expected_final_risk": "uncertain",
+      "frames": [
+        {"camera_range_m": 25, "camera_closing_speed_mps": 4.0, "radar_range_m": 26, "radar_closing_speed_mps": 5.0, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 21, "camera_closing_speed_mps": 4.2, "radar_range_m": 22, "radar_closing_speed_mps": 5.2, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 17, "camera_closing_speed_mps": 4.4, "radar_range_m": 31, "radar_closing_speed_mps": 1.0, "association_confidence": 0.25, "in_ego_corridor": true},
+        {"camera_range_m": 13, "camera_closing_speed_mps": 4.7, "radar_range_m": 29, "radar_closing_speed_mps": 1.0, "association_confidence": 0.25, "in_ego_corridor": true}
+      ]
+    },
+    {
+      "id": "adjacent_lane_vehicle",
+      "description": "A nearby vehicle is outside the ego corridor and must not become the collision target.",
+      "expected_final_risk": "none",
+      "frames": [
+        {"camera_range_m": 16, "camera_closing_speed_mps": 5.0, "radar_range_m": 15, "radar_closing_speed_mps": 6.0, "association_confidence": 0.95, "in_ego_corridor": false},
+        {"camera_range_m": 14, "camera_closing_speed_mps": 5.0, "radar_range_m": 13, "radar_closing_speed_mps": 6.0, "association_confidence": 0.95, "in_ego_corridor": false},
+        {"camera_range_m": 12, "camera_closing_speed_mps": 5.0, "radar_range_m": 11, "radar_closing_speed_mps": 6.0, "association_confidence": 0.95, "in_ego_corridor": false}
+      ]
+    },
+    {
+      "id": "stable_non_closing_lead",
+      "description": "The lead object is stable but is not closing, so TTC must remain unavailable.",
+      "expected_final_risk": "none",
+      "frames": [
+        {"camera_range_m": 28, "camera_closing_speed_mps": 0.0, "radar_range_m": 28, "radar_closing_speed_mps": 0.0, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 28, "camera_closing_speed_mps": 0.0, "radar_range_m": 28, "radar_closing_speed_mps": 0.0, "association_confidence": 0.9, "in_ego_corridor": true},
+        {"camera_range_m": 28, "camera_closing_speed_mps": 0.0, "radar_range_m": 28, "radar_closing_speed_mps": 0.0, "association_confidence": 0.9, "in_ego_corridor": true}
+      ]
+    }
+  ]
+}

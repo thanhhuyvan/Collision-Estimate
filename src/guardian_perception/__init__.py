@@ -5,7 +5,7 @@ from .association import AssociationCandidate, greedy_one_to_one_assignment
 from .fusion import CameraMeasurement, FusedTarget, RadarMeasurement, ReliabilityAwareFuser
 from .radar import RadarCluster, RadarClusterTracker, RadarPoint, cluster_radar_points
 from .risk import RiskEngine
-from .tracker import IouTracker
+from .tracker import IouTracker, KalmanTracker
 from .types import BoundingBox, Detection, RiskDecision, RiskLevel, TrackObservation
 
 __all__ = [
@@ -26,6 +26,7 @@ __all__ = [
     "RiskLevel",
     "TrackObservation",
     "IouTracker",
+    "KalmanTracker",
     "cluster_radar_points",
     "greedy_one_to_one_assignment",
 ]
